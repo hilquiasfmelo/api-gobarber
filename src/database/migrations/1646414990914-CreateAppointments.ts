@@ -11,7 +11,7 @@ class CreateAppointments1646414990914 implements MigrationInterface {
             type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
-            // default: 'uuid_generate_v4()',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'provider',
