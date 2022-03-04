@@ -1,4 +1,9 @@
+import 'reflect-metadata';
 import express from 'express';
+import 'dotenv/config';
+
+// Importe da conexão com DB
+import './database';
 
 import { routes } from './routes';
 
@@ -8,6 +13,6 @@ app.use(express.json());
 
 app.use(routes);
 
-app.listen(3333, () => {
-  console.log(`🚀 Server listening on port ${3333}`);
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`🚀 Server listening on port ${process.env.SERVER_PORT}`);
 });
