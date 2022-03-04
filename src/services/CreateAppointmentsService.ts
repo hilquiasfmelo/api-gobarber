@@ -5,13 +5,14 @@ import { Appointment } from '../models/Appointment';
 import { AppointmentsRepository } from '../repositories/AppointmentsRepository';
 
 interface IRequestProps {
-  provider: string;
+  provider_id: string;
   date: Date;
 }
 
 class CreateAppoitmentsService {
-  async execute({ provider, date }: IRequestProps): Promise<Appointment> {
+  async execute({ provider_id, date }: IRequestProps): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+
     /**
      * Reseta o horário para um exato, sem minutos ou segundos.
      * Ex: 12:53:21 para 12:00:00
@@ -27,7 +28,7 @@ class CreateAppoitmentsService {
     }
 
     const appointment = appointmentsRepository.create({
-      provider,
+      provider_id,
       date: appointmentDate,
     });
 
