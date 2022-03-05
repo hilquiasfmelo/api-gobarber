@@ -1,5 +1,6 @@
-import { instanceToInstance } from 'class-transformer';
 import { Router } from 'express';
+import { instanceToInstance } from 'class-transformer';
+
 import { CreateUsersService } from '../services/CreateUsersService';
 
 const usersRouter = Router();
