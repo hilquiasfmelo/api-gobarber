@@ -9,6 +9,7 @@ import { ensuredAuthenticated } from '../middlewares/ensureAuthenticated';
 
 const appointmentsRouter = Router();
 
+// Todas as rotas abaixo precisam necessitam de autenticação
 appointmentsRouter.use(ensuredAuthenticated);
 
 // Criação de Appoitments
@@ -16,7 +17,7 @@ appointmentsRouter.post('/', async (request, response) => {
   try {
     const { provider_id, date } = request.body;
 
-    // Converte a data em formato de Date do JavaScript
+    // Converte a data em formato Date do JavaScript
     const parsedDate = parseISO(date);
 
     const createAppointmentsService = new CreateAppoitmentsService();
