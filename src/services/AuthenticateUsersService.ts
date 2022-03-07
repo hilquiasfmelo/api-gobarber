@@ -4,6 +4,8 @@ import { sign } from 'jsonwebtoken';
 
 import { User } from '../models/User';
 
+import { AppError } from '../errors/AppError';
+
 interface IRequestProps {
   email: string;
   password: string;
@@ -27,13 +29,13 @@ class AuthenticateUsersService {
     });
 
     if (!user) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.', 401);
     }
 
     const passworMatched = await compare(password, user.password);
 
     if (!passworMatched) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.', 401);
     }
 
     const token = sign({}, String(process.env.JWT_SECRET), {

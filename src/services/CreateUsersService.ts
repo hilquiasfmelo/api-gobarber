@@ -3,6 +3,8 @@ import { getRepository } from 'typeorm';
 
 import { User } from '../models/User';
 
+import { AppError } from '../errors/AppError';
+
 interface IRequestProps {
   name: string;
   email: string;
@@ -18,7 +20,7 @@ class CreateUsersService {
     });
 
     if (checkUserExists) {
-      throw new Error(`Email address already exists`);
+      throw new AppError(`Email address already exists.`);
     }
 
     const passwordHash = await hash(password, 4);

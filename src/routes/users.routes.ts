@@ -14,19 +14,13 @@ const usersRouter = Router();
 
 // Criação de Users
 usersRouter.post('/', async (request, response) => {
-  try {
-    const { name, email, password } = request.body;
+  const { name, email, password } = request.body;
 
-    const createUsersService = new CreateUsersService();
+  const createUsersService = new CreateUsersService();
 
-    const user = await createUsersService.execute({ name, email, password });
+  const user = await createUsersService.execute({ name, email, password });
 
-    return response.status(201).json(instanceToInstance(user));
-  } catch (err) {
-    if (err instanceof Error) {
-      return response.status(400).json({ error: err.message });
-    }
-  }
+  return response.status(201).json(instanceToInstance(user));
 });
 
 // Upload Avatar Users
@@ -35,23 +29,17 @@ usersRouter.patch(
   ensuredAuthenticated,
   multer(uploadConfig).single('avatar'),
   async (request, response) => {
-    try {
-      const { user_id } = request.user;
-      const filename = request.file?.filename;
+    const { user_id } = request.user;
+    const filename = request.file?.filename;
 
-      const updateUserAvatarService = new UpdateUserAvatarService();
+    const updateUserAvatarService = new UpdateUserAvatarService();
 
-      const user = await updateUserAvatarService.execute({
-        user_id,
-        avatar_filename: String(filename),
-      });
+    const user = await updateUserAvatarService.execute({
+      user_id,
+      avatar_filename: String(filename),
+    });
 
-      return response.status(200).json(instanceToInstance(user));
-    } catch (err) {
-      if (err instanceof Error) {
-        return response.status(400).json({ error: err.message });
-      }
-    }
+    return response.status(200).json(instanceToInstance(user));
   },
 );
 

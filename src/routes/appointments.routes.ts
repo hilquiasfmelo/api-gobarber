@@ -14,25 +14,19 @@ appointmentsRouter.use(ensuredAuthenticated);
 
 // Criação de Appoitments
 appointmentsRouter.post('/', async (request, response) => {
-  try {
-    const { provider_id, date } = request.body;
+  const { provider_id, date } = request.body;
 
-    // Converte a data em formato Date do JavaScript
-    const parsedDate = parseISO(date);
+  // Converte a data em formato Date do JavaScript
+  const parsedDate = parseISO(date);
 
-    const createAppointmentsService = new CreateAppoitmentsService();
+  const createAppointmentsService = new CreateAppoitmentsService();
 
-    const appointment = await createAppointmentsService.execute({
-      provider_id,
-      date: parsedDate,
-    });
+  const appointment = await createAppointmentsService.execute({
+    provider_id,
+    date: parsedDate,
+  });
 
-    return response.json(appointment);
-  } catch (err) {
-    if (err instanceof Error) {
-      return response.status(400).json({ error: err.message });
-    }
-  }
+  return response.json(appointment);
 });
 
 // Listagem de todos os Appoitments

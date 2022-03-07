@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
+import { AppError } from '../errors/AppError';
+
 interface ITokenPayload {
   sub: string;
 }
@@ -13,7 +15,7 @@ const ensuredAuthenticated = (
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new Error('JWT is missing authorization header.');
+    throw new AppError('JWT is missing authorization header.', 401);
   }
 
   // Separa o token da palavra Bearer
@@ -30,7 +32,7 @@ const ensuredAuthenticated = (
 
     return next();
   } catch (err) {
-    throw new Error('Invalid JWT token.');
+    throw new AppError('Invalid JWT token.', 401);
   }
 };
 
