@@ -1,16 +1,19 @@
 import 'reflect-metadata';
+
 import express from 'express';
 import 'express-async-errors';
 import 'dotenv/config';
 
-import uploadConfig from './config/upload';
-
 // Importe da conexão com DB
-import './database';
+import '@shared/infra/typeorm';
 
-import { routes } from './routes';
+// Importe das Injeções de Dependências
+import '@shared/container';
 
-import { ServerError } from './errors/ServerError';
+import uploadConfig from '@config/upload';
+
+import { routes } from '@shared/infra/http/routes';
+import { ServerError } from '@shared/errors/ServerError';
 
 const app = express();
 
