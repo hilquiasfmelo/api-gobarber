@@ -6,8 +6,10 @@ import uploadConfig from '@config/upload';
 
 import { AppError } from '@shared/errors/AppError';
 
-import { User } from '../infra/typeorm/entities/User';
+import { IStorageProvider } from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import { IUsersRepository } from '../repositories/IUsersRepository';
+
+import { User } from '../infra/typeorm/entities/User';
 
 interface IRequestProps {
   user_id: string;
@@ -19,6 +21,9 @@ class UpdateUserAvatarService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider,
   ) {}
 
   async execute({ user_id, avatar_filename }: IRequestProps): Promise<User> {
@@ -29,18 +34,12 @@ class UpdateUserAvatarService {
     }
 
     if (user.avatar) {
-      // Une o caminho do arquivo com o próprio arquivo da imagem
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      // Verifica se já existe um avatar para o usuário
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExists) {
-        // Remove o avatar do usuário para outro avatar ser adicionado
-        await fs.promises.unlink(userAvatarFilePath);
-      }
+      await this.storageProvider.deleteFile(user.avatar);
     }
 
-    user.avatar = avatar_filename;
+    const filename = await this.storageProvider.saveFile(avatar_filename);
+
+    user.avatar = filename;
 
     await this.usersRepository.save(user);
 
