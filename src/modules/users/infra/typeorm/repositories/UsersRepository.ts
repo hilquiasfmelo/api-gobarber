@@ -1,7 +1,7 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Not, Repository } from 'typeorm';
 
+import { IFindAllProvidersDTO } from '@modules/users/dtos/IFindAllProvidersDTO';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
-
 import { User } from '../entities/User';
 
 interface IRequesProps {
@@ -37,6 +37,25 @@ class UsersRepository implements IUsersRepository {
     return this.usersRepository.findOne({
       where: { email },
     });
+  }
+
+  public async findAllProviders({
+    except_user_id,
+  }: IFindAllProvidersDTO): Promise<User[]> {
+    let users: User[];
+
+    if (except_user_id) {
+      // Busca todos os providers menos o que está logado
+      users = await this.usersRepository.find({
+        where: {
+          id: Not(except_user_id),
+        },
+      });
+    } else {
+      users = await this.usersRepository.find();
+    }
+
+    return users;
   }
 
   public async save(user: User): Promise<User> {

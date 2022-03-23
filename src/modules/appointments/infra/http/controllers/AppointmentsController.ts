@@ -6,6 +6,7 @@ import { CreateAppoitmentsService } from '@modules/appointments/services/CreateA
 
 class AppointmentsController {
   async create(request: Request, response: Response): Promise<Response> {
+    const { user_id } = request.user;
     const { provider_id, date } = request.body;
 
     // Converte a data em formato Date do JavaScript
@@ -16,11 +17,12 @@ class AppointmentsController {
     );
 
     const appointment = await createAppointmentsService.execute({
+      user_id,
       provider_id,
       date: parsedDate,
     });
 
-    return response.json(appointment);
+    return response.status(201).json(appointment);
   }
 }
 
