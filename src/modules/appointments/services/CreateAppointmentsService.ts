@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { getHours, isBefore, startOfHour } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/errors/AppError';
@@ -18,9 +18,6 @@ class CreateAppoitmentsService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
-
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
   ) {}
 
   async execute({
@@ -34,6 +31,22 @@ class CreateAppoitmentsService {
      */
     const appointmentDate = startOfHour(date);
 
+    // Não permite cadastrar em uma data que já passou
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't create appointment on a past date.");
+    }
+
+    if (user_id === provider_id) {
+      throw new AppError('You cannot create appointments for yourself', 400);
+    }
+
+    // Não é permitido criar um agendamento antes das 8am e depois das 5pm
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError(
+        'You cannot only create appointments between 8am and 5pm',
+      );
+    }
+
     const findAppointmentInSameDate =
       await this.appointmentsRepository.findByDate(appointmentDate);
 
@@ -41,18 +54,9 @@ class CreateAppoitmentsService {
       throw new AppError('This appointment is already booked.');
     }
 
-    const user = await this.usersRepository.findById(provider_id);
-
-    if (!user) {
-      throw new AppError('This service provider does not exist', 404);
-    }
-
-    if (user.id === user_id) {
-      throw new AppError('You cannot create appointments for yourself', 400);
-    }
-
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 

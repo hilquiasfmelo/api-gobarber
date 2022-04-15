@@ -66,6 +66,7 @@ class ListProviderDayAvailabilityService {
          * e se vier false coloque true
          */
         available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
+        // isAfter => Verifica se o agendamento é depois da data/horário atual
       };
     });
 

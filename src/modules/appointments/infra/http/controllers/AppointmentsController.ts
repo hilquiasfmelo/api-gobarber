@@ -17,8 +17,8 @@ class AppointmentsController {
     );
 
     const appointment = await createAppointmentsService.execute({
-      user_id,
       provider_id,
+      user_id,
       date: parsedDate,
     });
 
