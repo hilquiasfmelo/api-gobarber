@@ -23,7 +23,7 @@ app.use(routes);
 app.use(ServerError);
 
 app.listen(process.env.SERVER_PORT, () => {
-  console.log(`🚀 Server Listening on Port ${process.env.SERVER_PORT}`);
+  console.log(`🚀 Server is running at PORT ${process.env.SERVER_PORT}`);
 });
 
 export { app };
