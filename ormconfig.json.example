@@ -4,9 +4,9 @@
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "docker",
-    "password": "docker",
-    "database": "db_api_gobarber",
+    "username": "",
+    "password": "",
+    "database": "",
     "entities": [
       "./src/modules/**/infra/typeorm/entities/*.ts"
     ],
@@ -22,7 +22,7 @@
     "type": "mongodb",
     "host": "localhost",
     "port": 27017,
-    "database": "db_api_gobarber",
+    "database": "",
     "useUnifiedTopology": true,
     "useNewUrlParser": true,
     "useFindAndModify": true,

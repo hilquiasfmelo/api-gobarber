@@ -14,12 +14,15 @@ import uploadConfig from '@config/upload';
 
 import { routes } from '@shared/infra/http/routes';
 import { ServerError } from '@shared/errors/ServerError';
+import { errors } from 'celebrate';
 
 const app = express();
 
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use(routes);
+// Erros vindo das validações do Celebrate
+app.use(errors());
 app.use(ServerError);
 
 app.listen(process.env.SERVER_PORT, () => {
