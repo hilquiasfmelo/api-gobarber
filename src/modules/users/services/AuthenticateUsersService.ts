@@ -5,6 +5,7 @@ import { AppError } from '@shared/errors/AppError';
 
 import { IUsersRepository } from '../repositories/IUsersRepository';
 import { IHashProvider } from '../provider/HashProvider/models/IHashProvider';
+import { User } from '../infra/typeorm/entities/User';
 
 interface IRequestProps {
   email: string;
@@ -12,11 +13,7 @@ interface IRequestProps {
 }
 
 interface IReponseProps {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  user: User;
   token: string;
 }
 
@@ -52,11 +49,7 @@ class AuthenticateUsersService {
     });
 
     return {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
+      user,
       token,
     } as IReponseProps;
   }
