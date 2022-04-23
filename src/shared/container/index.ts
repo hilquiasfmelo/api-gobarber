@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 // Importe das Injeções de Dependências de Usuários
 import '@modules/users/provider';
 
-// Importe das Injeções de Dependências de Uploads de Arquivos
+// Importe das Injeções de Dependências de Uploads de Arquivos, Email e Template de Email
 import '@shared/container/providers';
 
 import { AppointmentsRepository } from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';

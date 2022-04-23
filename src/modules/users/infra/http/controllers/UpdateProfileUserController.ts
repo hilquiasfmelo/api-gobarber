@@ -12,7 +12,7 @@ class UpdateProfileUserController {
 
     const user = await showProfileService.execute(user_id);
 
-    return response.status(201).json(instanceToInstance(user));
+    return response.status(200).json(instanceToInstance(user));
   }
 
   async update(request: Request, response: Response): Promise<Response> {
