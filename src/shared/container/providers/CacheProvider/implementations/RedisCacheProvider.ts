@@ -29,6 +29,20 @@ class RedisCacheProvider implements ICacheProvider {
   public async invalidate(key: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
+  public async invalidatePrefix(prefix: string): Promise<void> {
+    // Busca todas as chaves que iniciam com esse prefixo
+    const keys = await this.clientRedis.keys(`${prefix}:*`);
+
+    // Função que executa múltiplas operações ao mesmo tempo
+    const pipeline = this.clientRedis.pipeline();
+
+    keys.forEach(key => {
+      pipeline.del(key);
+    });
+
+    await pipeline.exec();
+  }
 }
 
 export { RedisCacheProvider };
