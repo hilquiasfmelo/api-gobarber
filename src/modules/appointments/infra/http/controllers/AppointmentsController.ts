@@ -10,7 +10,7 @@ class AppointmentsController {
     const { provider_id, date } = request.body;
 
     // Converte a data em formato Date do JavaScript
-    const parsedDate = parseISO(date);
+    // const parsedDate = parseISO(date);
 
     const createAppointmentsService = container.resolve(
       CreateAppoitmentsService,
@@ -19,7 +19,7 @@ class AppointmentsController {
     const appointment = await createAppointmentsService.execute({
       provider_id,
       user_id,
-      date: parsedDate,
+      date,
     });
 
     return response.status(201).json(appointment);
